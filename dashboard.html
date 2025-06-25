@@ -5,7 +5,8 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  <div class="admin-panel">
+    <div class="admin-badge">Admin Panel</div>
     <h2>Registered Users</h2>
     <table id="usersTable">
       <thead>
@@ -45,7 +46,7 @@
       });
     })
     .catch(err => {
-      document.body.innerHTML += '<p style="color:red;">Unable to load user data.</p>';
+      document.body.innerHTML += '<p style="color:red; text-align:center;">⚠️ Unable to load user data.</p>';
     });
   </script>
 </body>
