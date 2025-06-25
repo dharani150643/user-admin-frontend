@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Registered Users</h2>
+    <table id="usersTable">
+      <thead>
+        <tr>
+          <th>ID</th><th>Name</th><th>Email</th><th>Mobile</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filled by JS -->
+      </tbody>
+    </table>
+  </div>
+  <script>
+    fetch('https://user-admin-backend-1.onrender.com/admin', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ username: 'admin', password: 'admin123' })
+    })
+    .then(res => res.json())
+    .then(users => {
+      const tbody = document.querySelector('#usersTable tbody');
+      users.forEach(u => {
+        const row = `<tr><td>${u.id}</td><td>${u.name}</td><td>${u.email}</td><td>${u.mobile}</td></tr>`;
+        tbody.innerHTML += row;
+      });
+    })
+    .catch(err => console.error(err));
+  </script>
+</body>
+</html>
