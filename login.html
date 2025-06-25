@@ -10,13 +10,17 @@
     <input type="text" id="username" placeholder="Admin Username" required>
     <input type="password" id="password" placeholder="Password" required>
     <button onclick="adminLogin()">Login</button>
-    <p id="error" style="color: red;"></p>
+    <p id="error" style="color: red; margin-top: 10px;"></p>
   </div>
 
   <script>
     function adminLogin() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const errorMessage = document.getElementById('error');
+
+      // Clear any previous errors
+      errorMessage.textContent = '';
 
       fetch('https://user-admin-backend-1.onrender.com/admin', {
         method: 'POST',
@@ -25,14 +29,25 @@
         },
         body: JSON.stringify({ username, password })
       })
-      .then(response => {
-        if (!response.ok) throw new Error('Login failed');
-        // If login is successful, redirect to dashboard
+      .then(res => {
+        if (!res.ok) {
+          if (res.status === 401) {
+            throw new Error('Invalid admin credentials');
+          } else {
+            throw new Error('Server error');
+          }
+        }
+        return res.json(); // parse JSON if login is valid
+      })
+      .then(() => {
+        // Save login state if needed (optional)
+        localStorage.setItem('adminLoggedIn', 'true');
+        // Redirect to dashboard
         window.location.href = 'dashboard.html';
       })
-      .catch(error => {
-        document.getElementById('error').textContent = 'Invalid admin credentials.';
-        console.error(error);
+      .catch(err => {
+        errorMessage.textContent = err.message;
+        console.error('Login error:', err);
       });
     }
   </script>
