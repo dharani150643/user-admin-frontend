@@ -62,7 +62,7 @@ button {
 }
 
 button:hover {
-  background: linear-gradient(135deg, #556cd6, #5a3796);
+  background: linear-gradient(135deg, #4759a8, #5a3796);
 }
 
 /* Success message */
