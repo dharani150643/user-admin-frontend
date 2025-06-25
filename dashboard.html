@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Data will load here -->
+        <!-- Filled by JS -->
       </tbody>
     </table>
   </div>
@@ -22,36 +22,30 @@
   <script>
     fetch('https://user-admin-backend-1.onrender.com/admin', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         username: 'admin',
         password: 'admin123'
       })
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to fetch users');
-      }
-      return response.json();
+    .then(res => {
+      if (!res.ok) throw new Error('Fetch error');
+      return res.json();
     })
     .then(users => {
       const tbody = document.querySelector('#usersTable tbody');
       users.forEach(user => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
+        const row = `<tr>
           <td>${user.id}</td>
           <td>${user.name}</td>
           <td>${user.email}</td>
           <td>${user.mobile}</td>
-        `;
-        tbody.appendChild(row);
+        </tr>`;
+        tbody.innerHTML += row;
       });
     })
     .catch(err => {
-      console.error('Fetch error:', err);
-      document.body.innerHTML += '<p style="color: red;">Failed to load user data.</p>';
+      document.body.innerHTML += '<p style="color:red;">Unable to load user data.</p>';
     });
   </script>
 </body>
