@@ -20,19 +20,19 @@
 
       fetch('https://user-admin-backend-1.onrender.com/admin', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ username, password })
       })
       .then(response => {
-        if (!response.ok) throw new Error("Login failed");
-        return response.json();
+        if (!response.ok) throw new Error('Login failed');
+        // If login is successful, redirect to dashboard
+        window.location.href = 'dashboard.html';
       })
-      .then(data => {
-        // redirect to dashboard if successful
-        window.location.href = "dashboard.html";
-      })
-      .catch(err => {
-        document.getElementById("error").innerText = "Invalid login credentials.";
+      .catch(error => {
+        document.getElementById('error').textContent = 'Invalid admin credentials.';
+        console.error(error);
       });
     }
   </script>
