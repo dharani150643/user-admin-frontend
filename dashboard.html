@@ -14,25 +14,45 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Filled by JS -->
+        <!-- Data will load here -->
       </tbody>
     </table>
   </div>
+
   <script>
     fetch('https://user-admin-backend-1.onrender.com/admin', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ username: 'admin', password: 'admin123' })
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: 'admin',
+        password: 'admin123'
+      })
     })
-    .then(res => res.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch users');
+      }
+      return response.json();
+    })
     .then(users => {
       const tbody = document.querySelector('#usersTable tbody');
-      users.forEach(u => {
-        const row = `<tr><td>${u.id}</td><td>${u.name}</td><td>${u.email}</td><td>${u.mobile}</td></tr>`;
-        tbody.innerHTML += row;
+      users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${user.id}</td>
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+          <td>${user.mobile}</td>
+        `;
+        tbody.appendChild(row);
       });
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      console.error('Fetch error:', err);
+      document.body.innerHTML += '<p style="color: red;">Failed to load user data.</p>';
+    });
   </script>
 </body>
 </html>
